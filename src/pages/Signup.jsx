@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Cloud, Lock, Mail, User, AlertCircle, ArrowRight } from 'lucide-react';
+import { CloudUpload, Lock, Mail, User, AlertCircle, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Signup() {
@@ -29,14 +29,14 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-teal-100 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
         {/* Brand Header */}
         <div className="flex items-center gap-3 mb-8">
-          <div className="h-10 w-10 bg-brand-600 rounded-xl flex items-center justify-center text-white shadow-sm">
-            <Cloud className="h-6 w-6" />
+          <div className="h-10 w-10 bg-brand-600 rounded-xl flex items-center justify-center text-black shadow-sm">
+           <CloudUpload className="h-6 w-6 text-teal-700" />
           </div>
-          <span className="text-2xl font-bold text-slate-900 tracking-tight">CloudBox</span>
+          <span className="text-2xl font-bold text-teal-700 tracking-tight">MediaCloud</span>
         </div>
 
         <h2 className="text-xl font-bold text-slate-900 mb-1">Create an account</h2>
