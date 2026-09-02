@@ -1,6 +1,6 @@
-import { Folder, FileText, Image, Video, Music, File, MoreVertical, ExternalLink } from 'lucide-react';
+import { Folder, FileText, Image, Video, Music, File, MoreVertical, Eye } from 'lucide-react';
 
-export default function FileList({ folders, files, onFolderClick }) {
+export default function FileList({ folders, files, onFolderClick , onFilePreview }) {
   const formatBytes = (bytes) => {
     if (!bytes || bytes === 0) return '--';
     const k = 1024;
@@ -50,7 +50,7 @@ export default function FileList({ folders, files, onFolderClick }) {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {/* Render Folders First */}
+            {/*  Folders  */}
             {folders.map((folder) => (
               <tr
                 key={folder.id}
@@ -77,9 +77,12 @@ export default function FileList({ folders, files, onFolderClick }) {
               </tr>
             ))}
 
-            {/* Render Files */}
+            {/* Files */}
             {files.map((file) => (
-              <tr key={file.id} className="hover:bg-slate-50 transition group">
+              <tr key={file.id} 
+              onDoubleClick={() => onFilePreview(file)}
+               className="hover:bg-slate-50 transition group"
+               >
                 <td className="py-3.5 px-6 font-medium text-slate-800 flex items-center gap-3">
                   <div className="p-1.5 bg-slate-50 rounded-lg">
                     {getFileIcon(file.mime_type)}
@@ -89,11 +92,21 @@ export default function FileList({ folders, files, onFolderClick }) {
                 <td className="py-3.5 px-6 text-slate-500">Me</td>
                 <td className="py-3.5 px-6 text-slate-500">{formatDate(file.updated_at)}</td>
                 <td className="py-3.5 px-6 text-slate-500">{formatBytes(file.size_bytes)}</td>
-                <td className="py-3.5 px-6 text-right">
+                 <td className="py-3.5 px-6 text-right flex items-center justify-end gap-1.5">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onFilePreview(file);
+                    }}
+                    className="px-2.5 py-1 text-slate-600 hover:bg-slate-100 rounded-lg text-xs font-medium flex items-center gap-1 transition"
+                  >
+                    <Eye className="h-3.5 w-3.5" /> Preview
+                  </button>
                   <button className="text-slate-400 hover:text-slate-600 p-1 rounded transition">
                     <MoreVertical className="h-4 w-4" />
                   </button>
-                </td>
+                  </td>
+
               </tr>
             ))}
           </tbody>
