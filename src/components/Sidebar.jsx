@@ -20,13 +20,13 @@ export default function Sidebar({ onNewFolderClick }) {
   ];
 
   return (
-    <aside className="w-64 bg-teal-700 text-slate-300 flex flex-col h-screen shrink-0 border-r border-slate-800">
+    <aside className="w-64 bg-slate-950 text-slate-300 flex flex-col h-screen shrink-0 border-r border-slate-800">
       {/* Brand Header */}
       <div className="flex items-center gap-3 px-6 py-5 border-b border-slate-800">
-        <div className="h-9 w-9 bg-brand-600 rounded-xl flex items-center justify-center text-white shadow-sm">
+        <div className="h-9 w-9 bg-brand-600 rounded-xl flex items-center justify-center text-teal-400 shadow-sm">
           <Cloud className="h-5 w-5" />
         </div>
-        <span className="text-xl font-bold text-white tracking-tight">MediaCloud</span>
+        <span className="text-xl font-bold text-teal-400 tracking-tight">MediaCloud</span>
       </div>
 
       {/* New Action Button */}

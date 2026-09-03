@@ -8,6 +8,7 @@ import FileList from '../components/FileList';
 import NewFolderModal from '../components/NewFolderModal';
 import UploadModal from '../components/UploadModal';
 import FilePreviewModal from '../components/FilePreviewModal';
+import ShareModal from '../components/ShareModal';
 import { FolderPlus, UploadCloud } from 'lucide-react';
 
 export default function Dashboard() {
@@ -20,6 +21,9 @@ export default function Dashboard() {
   const [isNewFolderOpen, setIsNewFolderOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [previewFile, setPreviewFile] = useState(null);
+
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [resourceToShare, setResourceToShare] = useState(null);
 
   const fetchFolderContent = async (folderId) => {
     setLoading(true);
@@ -52,8 +56,13 @@ export default function Dashboard() {
     }
   };
 
+  const handleShareClick = (resource) => {
+    setResourceToShare(resource);
+    setIsShareModalOpen(true);
+  };
+
   return (
-    <div className="flex h-screen bg-white overflow-hidden font-sans">
+    <div className="flex h-screen bg-slate-900 overflow-hidden font-sans">
       <Sidebar onNewFolderClick={() => setIsNewFolderOpen(true)} />
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
@@ -63,21 +72,22 @@ export default function Dashboard() {
           {/* Header Action Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">My Files</h1>
-              <p className="text-xs text-slate-500 mt-0.5">Manage and organize your cloud files.</p>
+              <h1 className="text-2xl font-bold text-slate-100">My Files</h1>
+              <p className="text-xs text-slate-400 mt-0.5">Manage and organize your cloud files.</p>
             </div>
 
             <div className="flex items-center gap-2.5">
               <button
                 onClick={() => setIsUploadOpen(true)}
-                className="px-4 py-2 bg-white hover:bg-teal-500 hover:text-white text-black font-medium rounded-xl text-sm shadow-sm transition flex items-center gap-2"
+                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 hover:text-teal-300 text-slate-300 font-medium rounded-xl text-sm shadow-sm transition flex items-center gap-2
+                 border border-slate-700  "
               >
                 <UploadCloud className="h-4 w-4" />
                 <span>Upload files</span>
               </button>
               <button
                 onClick={() => setIsNewFolderOpen(true)}
-                className="px-4 py-2 bg-white border border-slate-200 hover:bg-teal-500 hover:text-white text-black font-medium rounded-xl text-sm transition flex items-center gap-2 shadow-xs"
+                className="px-4 py-2 border  hover:text-teal-300  bg-teal-600 hover:bg-slate-700 text-white border-transparent  font-medium rounded-xl text-sm transition flex items-center gap-2 shadow-xs"
               >
                 <FolderPlus className="h-4 w-4" />
                 <span>New folder</span>
@@ -97,6 +107,7 @@ export default function Dashboard() {
               files={files}
               onFolderClick={fetchFolderContent}
               onFilePreview={(file) => setPreviewFile(file)}
+              onShare={handleShareClick}
             />
           )}
         </main>
@@ -119,6 +130,15 @@ export default function Dashboard() {
         file={previewFile}
         onClose={() => setPreviewFile(null)}
       />
+
+      <ShareModal
+      isOpen={isShareModalOpen}
+      onClose={() => {
+        setIsShareModalOpen(false);
+        setResourceToShare(null);
+      }}
+      resource={resourceToShare}
+    />
 
     </div>
   );

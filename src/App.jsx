@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
+import PublicShare from './pages/PublicShare';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -42,6 +43,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/share/:token" element={<PublicShare />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

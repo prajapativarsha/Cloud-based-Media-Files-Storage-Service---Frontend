@@ -15,6 +15,7 @@ export default function FilePreviewModal({ file, onClose }) {
       setLoading(true);
       setError('');
       try {
+        
         const { data } = await api.get(`/files/${file.id}`);
         setSignedUrl(data.signedUrl);
 

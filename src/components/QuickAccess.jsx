@@ -13,7 +13,7 @@ export default function QuickAccess() {
 
   return (
     <div className="mb-8">
-      <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wider mb-3">Quick access</h3>
+      <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Quick access</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {cards.map((c) => {
           const Icon = c.icon;
@@ -21,13 +21,13 @@ export default function QuickAccess() {
             <div
               key={c.title}
               onClick={() => navigate(c.path)}
-              className="bg-teal-50 border border-slate-200 rounded-xl p-4 hover:border-teal-500 hover:shadow-sm cursor-pointer transition flex items-start gap-3.5"
+              className="bg-slate-800 border border-slate-700 rounded-xl p-4 hover:border-teal-500 hover:shadow-sm cursor-pointer flex items-start gap-3.5 hover:bg-slate-700 transition-colors"
             >
-              <div className="p-2.5 bg-slate-50 text-slate-700 rounded-lg shrink-0">
-                <Icon className="h-5 w-5" />
+              <div className="p-2.5 bg-slate-50 text-slate-200 rounded-lg shrink-0">
+                <Icon className="h-5 w-5 text-slate-800" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-slate-800">{c.title}</h4>
+                <h4 className="text-sm font-semibold text-slate-400">{c.title}</h4>
                 <p className="text-xs text-slate-400 mt-0.5">{c.desc}</p>
               </div>
             </div>

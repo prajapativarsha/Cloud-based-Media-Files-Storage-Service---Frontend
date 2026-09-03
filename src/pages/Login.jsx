@@ -34,8 +34,10 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-teal-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-md border border-teal-200 p-8">
+    <div className="min-h-screen  flex items-center justify-center p-4
+    bg-[url('/src/assets/cloud-storage.png')] bg-cover bg-center bg-no-repeat">
+      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-100 p-8
+       shadow-teal-900/10  ">
         {/* Brand Header */}
         <div className="flex items-center gap-3 mb-8">
           <div className="h-10 w-10 bg-brand-600 rounded-xl flex items-center justify-center text-black shadow-sm">
@@ -72,7 +74,8 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="alex@example.com"
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-brand-500 focus:bg-white 
+               text-slate-800 placeholder-slate-400  focus:border-teal-500  focus:ring-teal-500 transition-all"
               />
             </div>
           </div>
@@ -87,7 +90,8 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200  text-sm focus:outline-none focus:ring-1 focus:ring-brand-500 focus:bg-white 
+                  text-slate-800 placeholder-slate-400 focus:border-teal-500  focus:ring-teal-500 rounded-lg transition-all"
               />
             </div>
           </div>
@@ -95,7 +99,8 @@ export default function Login() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full mt-2 py-2.5 bg-brand-600 hover:bg-brand-700 text-black font-medium rounded-xl text-sm shadow-sm transition flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full mt-2 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg text-sm shadow-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50
+            bg-teal-600 hover:bg-teal-700"
           >
             {isSubmitting ? 'Signing in...' : 'Sign In'}
             <ArrowRight className="h-4 w-4" />
@@ -114,7 +119,8 @@ export default function Login() {
         <button
           type="button"
           onClick={handleGoogleLogin}
-          className="w-full py-2.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-medium rounded-xl text-sm transition flex items-center justify-center gap-2 shadow-sm"
+          className="w-full py-2.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-medium rounded-lg text-sm flex items-center justify-center gap-2 shadow-sm
+            hover:border-slate-300 transition-colors "
         >
           <svg className="h-4 w-4" viewBox="0 0 24 24">
             <path
