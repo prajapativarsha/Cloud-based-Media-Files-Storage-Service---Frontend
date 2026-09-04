@@ -294,7 +294,7 @@ export default function Dashboard() {
             <FileList
               folders={sortedData.folders}
               files={sortedData.files}
-              starredIds={starredIds}
+              starredIds={starredIds}s
               onToggleStar={handleToggleStar}
               onFolderClick={fetchFolderContent}
               onFilePreview={(file) => setPreviewFile(file)}

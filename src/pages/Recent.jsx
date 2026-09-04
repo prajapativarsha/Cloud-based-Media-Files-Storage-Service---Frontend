@@ -62,7 +62,7 @@ export default function Recent() {
   }, [files, sortConfig]);
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden font-sans">
+    <div className="flex h-screen bg-slate-900 overflow-hidden font-sans">
       <Sidebar onNewFolderClick={() => setIsNewFolderOpen(true)} />
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
@@ -73,8 +73,8 @@ export default function Recent() {
           <div className="flex items-center justify-between gap-4 mb-6">
             <div>
               <div className="flex items-center gap-2">
-                <Clock className="h-6 w-6 text-brand-600" />
-                <h1 className="text-2xl font-bold text-slate-900">Recent Files</h1>
+                <Clock className="h-6 w-6 text-brand-600 text-slate-200" />
+                <h1 className="text-2xl font-bold text-slate-200">Recent Files</h1>
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
                 Files you have uploaded, edited, or viewed recently.

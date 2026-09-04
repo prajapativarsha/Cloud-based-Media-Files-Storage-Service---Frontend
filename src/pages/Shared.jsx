@@ -73,7 +73,7 @@ export default function Shared() {
   const hasItems = sharedFolders.length > 0 || sharedFiles.length > 0;
   
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden font-sans">
+    <div className="flex h-screen bg-slate-900 overflow-hidden font-sans">
       <Sidebar onNewFolderClick={() => setIsNewFolderOpen(true)} />
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
@@ -84,8 +84,8 @@ export default function Shared() {
           <div className="flex items-center justify-between gap-4 mb-6">
             <div>
               <div className="flex items-center gap-2">
-                <Users className="h-6 w-6 text-brand-600" />
-                <h1 className="text-2xl font-bold text-slate-900">Shared with me</h1>
+                <Users className="h-6 w-6 text-brand-600 bg-slate-200" />
+                <h1 className="text-2xl font-bold text-slate-200">Shared with me</h1>
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
                 Files and folders that other teammates have given you access to view or edit.
@@ -107,7 +107,7 @@ export default function Shared() {
               Loading shared resources...
             </div>
           ) : !hasItems ? (
-            <div className="bg-white border border-slate-200 rounded-2xl p-16 text-center text-slate-400 text-sm shadow-sm">
+            <div className="bg-slate-800 border border-slate-200 rounded-2xl p-16 text-center text-slate-400 text-sm shadow-sm">
               <Users className="h-10 w-10 text-slate-300 mx-auto mb-2" />
               <p className="font-medium text-slate-600">No shared items yet</p>
               <p className="text-xs text-slate-400 mt-1">
@@ -115,14 +115,14 @@ export default function Shared() {
               </p>
             </div>
           ) : (
-            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-              <div className="px-6 py-4 border-b border-slate-100">
-                <h3 className="font-semibold text-slate-800 text-sm">Shared Items</h3>
+            <div className="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden shadow-sm">
+              <div className="px-6 py-4 border-b border-slate-600">
+                <h3 className="font-semibold text-slate-200 text-sm">Shared Items</h3>
               </div>
 
               <table className="w-full text-left border-collapse text-sm">
                 <thead>
-                  <tr className="border-b border-slate-100 text-slate-400 text-xs font-semibold uppercase bg-slate-50/50">
+                  <tr className="border-b border-slate-100 text-slate-400 text-xs font-semibold uppercase bg-slate-700">
                     <th className="py-3 px-6">Name</th>
                     <th className="py-3 px-6">Access Role</th>
                     <th className="py-3 px-6">Last modified</th>
@@ -135,9 +135,9 @@ export default function Shared() {
                   {sharedFolders.map((folder) => {
                     const role = getRoleForResource('folder', folder.id);
                     return (
-                      <tr key={folder.id} className="hover:bg-slate-50 transition group">
-                        <td className="py-3.5 px-6 font-medium text-slate-800 flex items-center gap-3">
-                          <div className="p-1.5 bg-amber-50 text-amber-600 rounded-lg">
+                      <tr key={folder.id} className="hover:bg-slate-900/50 transition group">
+                        <td className="py-3.5 px-6 font-medium text-slate-200 flex items-center gap-3">
+                          <div className="p-1.5 text-teal-400 bg-slate-800 rounded-lg">
                             <Folder className="h-4 w-4 fill-amber-500 text-amber-500" />
                           </div>
                           <span>{folder.name}</span>
@@ -153,10 +153,10 @@ export default function Shared() {
                             {role}
                           </span>
                         </td>
-                        <td className="py-3.5 px-6 text-slate-500">{formatDate(folder.updated_at)}</td>
-                        <td className="py-3.5 px-6 text-slate-400">--</td>
+                        <td className="py-3.5 px-6 text-slate-200">{formatDate(folder.updated_at)}</td>
+                        <td className="py-3.5 px-6 text-slate-200">--</td>
                         <td className="py-3.5 px-6 text-right">
-                          <span className="text-xs text-slate-400 italic">Folder view</span>
+                          <span className="text-xs text-slate-200 italic">Folder view</span>
                         </td>
                       </tr>
                     );
@@ -169,10 +169,10 @@ export default function Shared() {
                       <tr
                         key={file.id}
                         onDoubleClick={() => setPreviewFile(file)}
-                        className="hover:bg-slate-50 transition group cursor-pointer"
+                        className="hover:bg-slate-900/50 transition group cursor-pointer"
                       >
-                        <td className="py-3.5 px-6 font-medium text-slate-800 flex items-center gap-3">
-                          <div className="p-1.5 bg-slate-50 rounded-lg">
+                        <td className="py-3.5 px-6 font-medium text-slate-200 flex items-center gap-3">
+                          <div className="p-1.5 bg-slate-600 rounded-lg text-slate-200">
                             {getFileIcon(file.mime_type)}
                           </div>
                           <span className="truncate max-w-xs">{file.name}</span>

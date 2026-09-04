@@ -73,7 +73,7 @@ export default function Starred() {
   }, [folders, files, sortConfig]);
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden font-sans">
+    <div className="flex h-screen bg-slate-900 overflow-hidden font-sans">
       <Sidebar onNewFolderClick={() => setIsNewFolderOpen(true)} />
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
@@ -85,7 +85,7 @@ export default function Starred() {
             <div>
               <div className="flex items-center gap-2">
                 <Star className="h-6 w-6 text-amber-500 fill-amber-500" />
-                <h1 className="text-2xl font-bold text-slate-900">Starred</h1>
+                <h1 className="text-2xl font-bold text-slate-200">Starred</h1>
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
                 Quickly access the files and folders you’ve flagged as important.

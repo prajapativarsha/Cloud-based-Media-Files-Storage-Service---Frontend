@@ -48,7 +48,7 @@ export default function Trash() {
   const totalItems = deletedFolders.length + deletedFiles.length;
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden font-sans">
+    <div className="flex h-screen bg-slate-900 overflow-hidden font-sans">
       <Sidebar onNewFolderClick={() => {}} />
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
@@ -56,7 +56,7 @@ export default function Trash() {
 
         <main className="flex-1 overflow-y-auto p-8">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-slate-900">Trash</h1>
+            <h1 className="text-2xl font-bold text-slate-200">Trash</h1>
             <p className="text-xs text-slate-500 mt-0.5">Items here can be restored or permanently purged.</p>
           </div>
 
@@ -65,7 +65,7 @@ export default function Trash() {
             <span>Items in the trash will be automatically purged after 30 days.</span>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          <div className="bg-slate-800 border border-slate-800 rounded-2xl overflow-hidden shadow-sm">
             {loading ? (
               <div className="py-20 text-center text-slate-400 text-sm">Loading trash...</div>
             ) : totalItems === 0 ? (
@@ -76,7 +76,7 @@ export default function Trash() {
             ) : (
               <table className="w-full text-left border-collapse text-sm">
                 <thead>
-                  <tr className="border-b border-slate-100 text-slate-400 text-xs font-semibold uppercase bg-slate-50/50">
+                  <tr className="border-b border-slate-400 text-slate-200 text-xs font-semibold uppercase bg-slate-700">
                     <th className="py-3 px-6">Name</th>
                     <th className="py-3 px-6">Deleted date</th>
                     <th className="py-3 px-6 text-right">Actions</th>
@@ -85,22 +85,22 @@ export default function Trash() {
                 <tbody className="divide-y divide-slate-100">
                   {/* Folders */}
                   {deletedFolders.map((folder) => (
-                    <tr key={folder.id} className="hover:bg-slate-50">
-                      <td className="py-3.5 px-6 font-medium text-slate-800 flex items-center gap-3">
+                    <tr key={folder.id} className="hover:bg-slate-900/50">
+                      <td className="py-3.5 px-6 font-medium text-slate-200 flex items-center gap-3">
                         <Folder className="h-4 w-4 text-amber-500 fill-amber-500" />
                         <span>{folder.name}</span>
                       </td>
-                      <td className="py-3.5 px-6 text-slate-500 text-xs">{new Date(folder.updated_at).toLocaleDateString()}</td>
+                      <td className="py-3.5 px-6 text-slate-200 text-xs">{new Date(folder.updated_at).toLocaleDateString()}</td>
                       <td className="py-3.5 px-6 text-right space-x-2">
                         <button
                           onClick={() => handleRestore('folder', folder.id)}
-                          className="px-2.5 py-1 text-brand-600 hover:bg-brand-50 rounded-lg text-xs font-medium"
+                          className="px-2.5 py-1 text-slate-100 hover:bg-brand-50 rounded-lg text-xs font-medium"
                         >
                           Restore
                         </button>
                         <button
                           onClick={() => handlePurge('folder', folder.id)}
-                          className="px-2.5 py-1 text-red-600 hover:bg-red-50 rounded-lg text-xs font-medium"
+                          className="px-2.5 py-1 text-red-400 hover:bg-red-50 rounded-lg text-xs font-medium"
                         >
                           Delete permanently
                         </button>
@@ -110,22 +110,22 @@ export default function Trash() {
 
                   {/* Files */}
                   {deletedFiles.map((file) => (
-                    <tr key={file.id} className="hover:bg-slate-50">
-                      <td className="py-3.5 px-6 font-medium text-slate-800 flex items-center gap-3">
+                    <tr key={file.id} className="hover:bg-slate-900/50">
+                      <td className="py-3.5 px-6 font-medium text-slate-200 flex items-center gap-3">
                         <FileText className="h-4 w-4 text-blue-500" />
                         <span>{file.name}</span>
                       </td>
-                      <td className="py-3.5 px-6 text-slate-500 text-xs">{new Date(file.updated_at).toLocaleDateString()}</td>
+                      <td className="py-3.5 px-6 text-slate-200 text-xs">{new Date(file.updated_at).toLocaleDateString()}</td>
                       <td className="py-3.5 px-6 text-right space-x-2">
                         <button
                           onClick={() => handleRestore('file', file.id)}
-                          className="px-2.5 py-1 text-brand-600 hover:bg-brand-50 rounded-lg text-xs font-medium"
+                          className="px-2.5 py-1 text-slate-200 hover:bg-brand-50 rounded-lg text-xs font-medium"
                         >
                           Restore
                         </button>
                         <button
                           onClick={() => handlePurge('file', file.id)}
-                          className="px-2.5 py-1 text-red-600 hover:bg-red-50 rounded-lg text-xs font-medium"
+                          className="px-2.5 py-1 text-red-400 hover:bg-red-50 rounded-lg text-xs font-medium"
                         >
                           Delete permanently
                         </button>
