@@ -10,6 +10,8 @@ import UploadModal from '../components/UploadModal';
 import FilePreviewModal from '../components/FilePreviewModal';
 import ShareModal from '../components/ShareModal';
 import { FolderPlus, UploadCloud } from 'lucide-react';
+import { folderCache } from '../lib/cache';
+import VersionModal from '../components/VersionModal';
 
 export default function Dashboard() {
   const [currentFolderId, setCurrentFolderId] = useState('root');
@@ -21,6 +23,7 @@ export default function Dashboard() {
   const [isNewFolderOpen, setIsNewFolderOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [previewFile, setPreviewFile] = useState(null);
+  const [versionFile, setVersionFile] = useState(null);
 
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [resourceToShare, setResourceToShare] = useState(null);
@@ -37,18 +40,18 @@ export default function Dashboard() {
     setActiveSearchQuery('');
     setSearchResults(null);
 
-    // const cacheKey = `folder:${folderId}`;
-    // if (!skipCache) {
-    //   const cached = folderCache.get(cacheKey);
-    //   if (cached) {
-    //     setFolders(cached.folders);
-    //     setFiles(cached.files);
-    //     setBreadcrumbs(cached.breadcrumbs);
-    //     setCurrentFolderId(folderId);
-    //     setLoading(false);
-    //     return;
-    //   }
-    // }
+    const cacheKey = `folder:${folderId}`;
+    if (!skipCache) {
+      const cached = folderCache.get(cacheKey);
+      if (cached) {
+        setFolders(cached.folders);
+        setFiles(cached.files);
+        setBreadcrumbs(cached.breadcrumbs);
+        setCurrentFolderId(folderId);
+        setLoading(false);
+        return;
+      }
+    }
     try {
       const { data } = await api.get(`/folders/${folderId}`);
       const folderList = data.children?.folders || [];
@@ -56,7 +59,7 @@ export default function Dashboard() {
       const crumbs = data.breadcrumbs || [{ id: 'root', name: 'My Files' }];
 
       
-      // folderCache.set(cacheKey, { folders: folderList, files: fileList, breadcrumbs: crumbs });
+      folderCache.set(cacheKey, { folders: folderList, files: fileList, breadcrumbs: crumbs });
      
       setFolders(folderList);
       setFiles(fileList);
@@ -154,7 +157,7 @@ export default function Dashboard() {
         name,
         parentId: currentFolderId === 'root' ? null : currentFolderId,
       });
-      // folderCache.invalidate(`folder:${currentFolderId}`);
+      folderCache.invalidate(`folder:${currentFolderId}`);
       fetchFolderContent(currentFolderId);
     } catch (err) {
       alert(err.response?.data?.error?.message || 'Failed to create folder');
@@ -165,6 +168,8 @@ export default function Dashboard() {
     setResourceToShare(resource);
     setIsShareModalOpen(true);
   };
+
+  
 
   return (
     <div className="flex h-screen bg-slate-900 overflow-hidden font-sans">
@@ -241,6 +246,7 @@ export default function Dashboard() {
               onShare={handleShareClick}
               sortConfig={sortConfig}
               onSortChange={handleSortChange}
+              onVersionClick={(file) => setVersionFile(file)}
             />
           )}
         </main>
@@ -257,7 +263,7 @@ export default function Dashboard() {
         onClose={() => setIsUploadOpen(false)}
         currentFolderId={currentFolderId}
         onUploadSuccess={() => {
-          // folderCache.invalidate(`folder:${currentFolderId}`);
+          folderCache.invalidate(`folder:${currentFolderId}`);
           fetchFolderContent(currentFolderId)
         }}
       />
@@ -275,6 +281,8 @@ export default function Dashboard() {
       }}
       resource={resourceToShare}
     />
+
+    <VersionModal file={versionFile} isOpen={!!versionFile} onClose={()=> setVersionFile(null)} onVersionReverted={() => fetchFolderContent(currentFolderId)} />
 
     </div>
   );

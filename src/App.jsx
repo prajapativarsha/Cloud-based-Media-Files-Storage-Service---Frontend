@@ -4,6 +4,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import PublicShare from './pages/PublicShare';
+import Trash from './pages/Trash';
+import Recent from './pages/Recent';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -43,7 +45,16 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/recent"
+            element={
+              <ProtectedRoute>
+                <Recent />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/share/:token" element={<PublicShare />} />
+          <Route path="/trash" element={<ProtectedRoute><Trash /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

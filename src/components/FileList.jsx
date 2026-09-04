@@ -7,8 +7,8 @@ import {
   File,
   MoreVertical,
   Eye,
-  ArrowUpDown, 
-  ArrowUp, 
+  ArrowUpDown,
+  ArrowUp,
   ArrowDown
 } from "lucide-react";
 
@@ -19,7 +19,8 @@ export default function FileList({
   onFilePreview,
   onShare,
   sortConfig,
-  onSortChange
+  onSortChange,
+  onVersionClick
 }) {
   const formatBytes = (bytes) => {
     if (!bytes || bytes === 0) return "--";
@@ -81,7 +82,7 @@ export default function FileList({
               {/* Name Column */}
               <th
                 onClick={() => onSortChange('name')}
-                className="py-3 px-6 cursor-pointer hover:text-slate-700 transition group"
+                className="py-3 px-6 cursor-pointer hover:text-slate-200 transition group"
               >
                 <div className="flex items-center gap-1.5">
                   <span>Name</span>
@@ -94,7 +95,7 @@ export default function FileList({
               {/* Date Column */}
               <th
                 onClick={() => onSortChange('updated_at')}
-                className="py-3 px-6 cursor-pointer hover:text-slate-700 transition group"
+                className="py-3 px-6 cursor-pointer hover:text-slate-200 transition group"
               >
                 <div className="flex items-center gap-1.5">
                   <span>Last modified</span>
@@ -105,7 +106,7 @@ export default function FileList({
               {/* Size Column */}
               <th
                 onClick={() => onSortChange('size_bytes')}
-                className="py-3 px-6 cursor-pointer hover:text-slate-700 transition group"
+                className="py-3 px-6 cursor-pointer hover:text-slate-200 transition group"
               >
                 <div className="flex items-center gap-1.5">
                   <span>Size</span>
@@ -199,19 +200,29 @@ export default function FileList({
                     }}
                     className="px-2.5 py-1 text-slate-600 hover:bg-slate-100 rounded-lg text-xs font-medium flex items-center gap-5 transition"
                   >
-                     Share  
+                    Share
                   </button>
                   <button onClick={() => onFilePreview(file)}
-                  className="py-1 px-2 text-right text-slate-600 flex items-center justify-end gap-1.5  hover:bg-slate-100 rounded-lg ">
-                     <Eye className="h-3.5 w-3.5 "/> Preview
+                    className="py-1 px-2 text-right text-slate-600 flex items-center justify-end gap-1.5  hover:bg-slate-100 rounded-lg ">
+                    <Eye className="h-3.5 w-3.5 " /> Preview
                   </button>
-                  
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onVersionClick(file);
+                    }}
+                    className="px-2.5 py-1 text-slate-400 hover:bg-slate-100 rounded-lg text-xs font-medium transition"
+                    title="Version history"
+                  >
+                    Versions
+                  </button>
                   <button className="text-slate-400 hover:text-slate-600 p-1 rounded transition">
                     <MoreVertical className="h-4 w-4" />
                   </button>
                 </td>
 
-                
+
               </tr>
             ))}
           </tbody>
