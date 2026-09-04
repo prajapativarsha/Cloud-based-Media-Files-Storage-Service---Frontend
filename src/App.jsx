@@ -6,6 +6,8 @@ import Dashboard from './pages/Dashboard';
 import PublicShare from './pages/PublicShare';
 import Trash from './pages/Trash';
 import Recent from './pages/Recent';
+import Shared from './pages/Shared';
+import Starred from './pages/Starred';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -37,6 +39,7 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+
           <Route
             path="/"
             element={
@@ -45,6 +48,25 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/starred"
+            element={
+              <ProtectedRoute>
+                <Starred />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/shared"
+            element={
+              <ProtectedRoute>
+                <Shared />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/recent"
             element={

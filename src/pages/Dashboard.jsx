@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo} from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import api from '../lib/api';
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
@@ -25,6 +25,8 @@ export default function Dashboard() {
   const [previewFile, setPreviewFile] = useState(null);
   const [versionFile, setVersionFile] = useState(null);
 
+  const [starredIds, setStarredIds] = useState(new Set());
+
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [resourceToShare, setResourceToShare] = useState(null);
 
@@ -34,6 +36,57 @@ export default function Dashboard() {
 
   // Sorting State
   const [sortConfig, setSortConfig] = useState({ key: 'name', direction: 'asc' });
+
+  const fetchStarredStatus = async () => {
+    try {
+      const { data } = await api.get('/stars');
+      const ids = new Set((data.files || []).map((f) => f.id));
+      setStarredIds(ids);
+    } catch (err) {
+      console.error('Failed to fetch stars:', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchFolderContent(currentFolderId);
+    fetchStarredStatus();
+  }, []);
+
+  const handleToggleStar = async (file) => {
+    // Optimistic UI update
+    setStarredIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(file.id)) {
+        next.delete(file.id);
+      } else {
+        next.add(file.id);
+      }
+      return next;
+    });
+
+    try {
+      await api.post('/stars/toggle', {
+        resourceType: 'file',
+        resourceId: file.id,
+      });
+    } catch (err) {
+      console.error('Failed to toggle star:', err);
+      // Revert state if the API request fails
+      fetchStarredStatus();
+    }
+  };
+
+  const handleDeleteFile = async (file) => {
+    if (!confirm(`Are you sure you want to move "${file.name}" to Trash?`)) return;
+
+    try {
+      await api.delete(`/files/${file.id}`);
+      folderCache.invalidate(`folder:${currentFolderId}`);
+      fetchFolderContent(currentFolderId, true);
+    } catch (err) {
+      alert(err.response?.data?.error?.message || 'Failed to delete file');
+    }
+  };
 
   const fetchFolderContent = async (folderId, skipCache = false) => {
     setLoading(true);
@@ -58,15 +111,15 @@ export default function Dashboard() {
       const fileList = data.children?.files || [];
       const crumbs = data.breadcrumbs || [{ id: 'root', name: 'My Files' }];
 
-      
+
       folderCache.set(cacheKey, { folders: folderList, files: fileList, breadcrumbs: crumbs });
-     
+
       setFolders(folderList);
       setFiles(fileList);
       setBreadcrumbs(crumbs);
       setCurrentFolderId(folderId);
 
-    
+
     } catch (err) {
       console.error('Failed to load folder data:', err);
     } finally {
@@ -78,7 +131,7 @@ export default function Dashboard() {
     fetchFolderContent(currentFolderId);
   }, []);
 
-// Full-page search handler
+  // Full-page search handler
   const handleSearchSubmit = async (queryText) => {
     if (!queryText.trim()) {
       setActiveSearchQuery('');
@@ -169,7 +222,7 @@ export default function Dashboard() {
     setIsShareModalOpen(true);
   };
 
-  
+
 
   return (
     <div className="flex h-screen bg-slate-900 overflow-hidden font-sans">
@@ -177,7 +230,7 @@ export default function Dashboard() {
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <Navbar
-        onSelectSearchResult={handleSelectSearchResult}
+          onSelectSearchResult={handleSelectSearchResult}
           onSearchSubmit={handleSearchSubmit}
         />
 
@@ -207,23 +260,23 @@ export default function Dashboard() {
                   <X className="h-4 w-4" /> Clear Search
                 </button>
               ) : (
-              <>
-              <button
-                onClick={() => setIsUploadOpen(true)}
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 hover:text-teal-300 text-slate-300 font-medium rounded-xl text-sm shadow-sm transition flex items-center gap-2
+                <>
+                  <button
+                    onClick={() => setIsUploadOpen(true)}
+                    className="px-4 py-2 bg-slate-800 hover:bg-slate-700 hover:text-teal-300 text-slate-300 font-medium rounded-xl text-sm shadow-sm transition flex items-center gap-2
                  border border-slate-700  "
-              >
-                <UploadCloud className="h-4 w-4" />
-                <span>Upload files</span>
-              </button>
-              <button
-                onClick={() => setIsNewFolderOpen(true)}
-                className="px-4 py-2 border  hover:text-teal-300  bg-teal-600 hover:bg-slate-700 text-white border-transparent  font-medium rounded-xl text-sm transition flex items-center gap-2 shadow-xs"
-              >
-                <FolderPlus className="h-4 w-4" />
-                <span>New folder</span>
-              </button>
-              </>
+                  >
+                    <UploadCloud className="h-4 w-4" />
+                    <span>Upload files</span>
+                  </button>
+                  <button
+                    onClick={() => setIsNewFolderOpen(true)}
+                    className="px-4 py-2 border  hover:text-teal-300  bg-teal-600 hover:bg-slate-700 text-white border-transparent  font-medium rounded-xl text-sm transition flex items-center gap-2 shadow-xs"
+                  >
+                    <FolderPlus className="h-4 w-4" />
+                    <span>New folder</span>
+                  </button>
+                </>
               )}
             </div>
           </div>
@@ -239,11 +292,14 @@ export default function Dashboard() {
             <div className="py-20 text-center text-slate-400 text-sm">Loading folder contents...</div>
           ) : (
             <FileList
-             folders={sortedData.folders}
+              folders={sortedData.folders}
               files={sortedData.files}
+              starredIds={starredIds}
+              onToggleStar={handleToggleStar}
               onFolderClick={fetchFolderContent}
               onFilePreview={(file) => setPreviewFile(file)}
               onShare={handleShareClick}
+              onDeleteFile={handleDeleteFile}
               sortConfig={sortConfig}
               onSortChange={handleSortChange}
               onVersionClick={(file) => setVersionFile(file)}
@@ -274,15 +330,15 @@ export default function Dashboard() {
       />
 
       <ShareModal
-      isOpen={isShareModalOpen}
-      onClose={() => {
-        setIsShareModalOpen(false);
-        setResourceToShare(null);
-      }}
-      resource={resourceToShare}
-    />
+        isOpen={isShareModalOpen}
+        onClose={() => {
+          setIsShareModalOpen(false);
+          setResourceToShare(null);
+        }}
+        resource={resourceToShare}
+      />
 
-    <VersionModal file={versionFile} isOpen={!!versionFile} onClose={()=> setVersionFile(null)} onVersionReverted={() => fetchFolderContent(currentFolderId)} />
+      <VersionModal file={versionFile} isOpen={!!versionFile} onClose={() => setVersionFile(null)} onVersionReverted={() => fetchFolderContent(currentFolderId)} />
 
     </div>
   );
