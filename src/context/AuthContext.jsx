@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import api from '../lib/api';
+import { folderCache, searchCache } from '../lib/cache';
 
 const AuthContext = createContext(null);
 
@@ -38,8 +39,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
+    try {
     await api.post('/auth/logout');
+  } catch (err) {
+    console.error('Logout request failed:', err);
+  } finally {
+    folderCache.clear();
+    searchCache.clear();
     setUser(null);
+  }
   };
 
   return (
